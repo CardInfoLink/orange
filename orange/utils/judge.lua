@@ -7,6 +7,7 @@ local table_insert = table.insert
 local string_gsub = string.gsub
 local utils = require("orange.utils.utils")
 local condition = require("orange.utils.condition")
+local related_condition = require("orange.utils.related_condition")
 
 
 local _M = {}
@@ -104,6 +105,20 @@ function _M.filter_complicated_conditions(expression, conditions, plugin_name)
     return pass
 end
 
+function _M.filter_related_conditions(conditions)
+    if not conditions then return false end
+
+    local pass = false
+    for i, c in ipairs(conditions) do
+        pass = related_condition.judge(c)
+        if not pass then
+            return false
+        end
+    end
+
+    return pass
+end
+
 function _M.judge_selector(selector, plugin_name)
     if not selector or not selector.judge then return false end
 
@@ -136,6 +151,8 @@ function _M.judge_rule(rule, plugin_name)
         pass = _M.filter_or_conditions(conditions)
     elseif judge_type == 3 then
         pass = _M.filter_complicated_conditions(judge.expression, conditions, plugin_name)
+    elseif judge_type == 4 then
+        pass = _M.filter_related_conditions(conditions)
     end
 
     return pass

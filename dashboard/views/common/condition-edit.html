@@ -8,6 +8,7 @@
                 <option value="1" {@if r.judge.type==1 } selected {@/if}>and匹配</option>
                 <option value="2" {@if r.judge.type==2 } selected {@/if}>or匹配</option>
                 <option value="3" {@if r.judge.type==3 } selected {@/if}>复杂匹配</option>
+                <option value="4" {@if r.judge.type==4 } selected {@/if}>关联条件匹配</option>
             </select>
         </div>
 
@@ -31,17 +32,27 @@
                     <!-- <option value="Method" {@if c.type == "Method" } selected {@/if}>Method</option> -->
                     <option value="Host" {@if c.type == "Host" } selected {@/if}>Host</option>
                     <option value="Referer" {@if c.type == "Referer" } selected {@/if}>Referer</option>
+                    <option value="JsonQueryParam" {@if c.type == "JsonQueryParam" } selected {@/if}>JsonQueryParam</option>
+                    <option value="JsonPostParam" {@if c.type == "JsonPostParam" } selected {@/if}>JsonPostParam</option>
+                    <option value="Base64QueryParam" {@if c.type == "Base64QueryParam" } selected {@/if}>Base64QueryParam</option>
+                    <option value="Base64PostParam" {@if c.type == "Base64PostParam" } selected {@/if}>Base64PostParam</option>
+                    <option value="B64DecQueryParam" {@if c.type == "B64DecQueryParam" } selected {@/if}>B64DecQueryParam</option>
                 </select>
             </div>
-            <div class="col-sm-2 condition-name-hodler"
-                {@if c.type!="Header"&&c.type!="Query"&&c.type!="PostParams" } 
+            <div class="col-sm-2 condition-name-holder"
+                {@if c.type!="Header"&&c.type!="Query"&&c.type!="PostParams"&&c.type!="JsonQueryParam"&&c.type!="JsonPostParam"&&c.type!="Base64QueryParam"&&c.type!="Base64PostParam"&&c.type!="B64DecQueryParam" } 
                     style="display:none;padding-left:0px;" 
                 {@else}
                     style="padding-left:0px;" 
                 {@/if}>
                 <input type="text" class="form-control" name="rule-judge-condition-name" placeholder="name" value="${c.name}">
             </div>
-            <div class="col-sm-3" style="padding:0px;">
+            <div class="col-sm-3 condition-operator-holder"
+                {@if c.type=="B64DecQueryParam" } 
+                    style="display:none;padding-left:0px;" 
+                {@else}
+                    style="padding-left:0px;" 
+                {@/if}>
                 <select class="form-control"  name="rule-judge-condition-operator">
                     <option value="match" {@if c.operator=="match" } selected {@/if}>Match</option>
                     <option value="not_match" {@if c.operator=="not_match" } selected {@/if}>Not Match</option>
@@ -53,7 +64,12 @@
                     <option value="<=" {@if c.operator=="<="} selected {@/if}>&le;</option>
                 </select>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-3 condition-value-holder"
+                {@if c.type=="B64DecQueryParam" } 
+                    style="display:none;padding-left:0px;" 
+                {@else}
+                    style="padding-left:0px;" 
+                {@/if}>
                 <input type="text" class="form-control" name="rule-judge-condition-value" placeholder="value" value="${c.value}">
             </div>
             <div class="col-sm-1" style="margin-top: 5px">
