@@ -130,7 +130,6 @@ function _M.judge(condition)
 		end
 		
         local __query_content__ = __get_query_content__()
-		ngx.log(ngx.ERR, "[Condition Judge] __query_content__: ", __query_content__)
 		if type(__query_content__) == "table" then
 			real = __query_content__[condition.name]
 		elseif type(__query_content__) == "string" then
