@@ -9,7 +9,7 @@ local ngx_decode_base64 = ngx.decode_base64
 
 local function assert_condition(real, operator, expected)
     if not real then
-        ngx.log(ngx.ERR, string_format("assert_condition error: %s %s %s", real, operator, expected))
+        ngx.log(ngx.INFO, string_format("assert_condition error: %s %s %s", real, operator, expected))
         return false
     end
 
@@ -113,7 +113,7 @@ function _M.judge(condition)
         ngx.req.read_body()
         local post_params, err = ngx.req.get_post_args()
         if not post_params or err then
-            ngx.log(ngx.ERR, "[Condition Judge]failed to get post args: ", err)
+            ngx.log(ngx.INFO, "[Condition Judge]failed to get post args: ", err)
             return false
         end
 
@@ -125,7 +125,7 @@ function _M.judge(condition)
     elseif condition_type == "JsonQueryParam" then
 		local __get_query_content__ = ngx.req.__get_query_content__
 		if __get_query_content__ == nil or type(__get_query_content__) ~= "function" then
-			ngx.log(ngx.ERR, "[Condition Judge]failed to get json query content")
+			ngx.log(ngx.INFO, "[Condition Judge]failed to get json query content")
             return false
 		end
 		
@@ -136,7 +136,7 @@ function _M.judge(condition)
 			local json_params = cjson.decode(__query_content__)
         		real = json_params[condition.name]
 		else
-			ngx.log(ngx.ERR, "[Condition Judge]invalid json query content type: ", type(__query_content__))
+			ngx.log(ngx.INFO, "[Condition Judge]invalid json query content type: ", type(__query_content__))
             return false
 		end
 		ngx.req.__get_query_content__ = nil
@@ -150,7 +150,7 @@ function _M.judge(condition)
 				local json_params = cjson.decode(__post_content__)
 	        		real = json_params[condition.name]
 			else
-				ngx.log(ngx.ERR, "[Condition Judge]invalid json post content type: ", type(__post_content__))
+				ngx.log(ngx.INFO, "[Condition Judge]invalid json post content type: ", type(__post_content__))
 	            return false
 			end
 		else
@@ -166,7 +166,7 @@ function _M.judge(condition)
 	        ngx.req.read_body()
 	        local post_body = ngx.req.get_body_data()
 	        if not post_body then
-	            ngx.log(ngx.ERR, "[Condition Judge]failed to get post body")
+	            ngx.log(ngx.INFO, "[Condition Judge]failed to get post body")
 	            return false
 	        end
 	
@@ -186,7 +186,7 @@ function _M.judge(condition)
                     real = nil
 				end
 			else
-				ngx.log(ngx.ERR, "[Condition Judge]invalid base64 query content type: ", type(__query_content__))
+				ngx.log(ngx.INFO, "[Condition Judge]invalid base64 query content type: ", type(__query_content__))
 	            return false
 			end
 		else
@@ -211,7 +211,7 @@ function _M.judge(condition)
                     real = nil
 				end
 			else
-				ngx.log(ngx.ERR, "[Condition Judge]invalid base64 query content type: ", type(__post_content__))
+				ngx.log(ngx.INFO, "[Condition Judge]invalid base64 query content type: ", type(__post_content__))
 	            return false
 			end
 		else
@@ -227,7 +227,7 @@ function _M.judge(condition)
 	        ngx.req.read_body()
 	        local post_params, err = ngx.req.get_post_args()
 	        if not post_params or err then
-	            ngx.log(ngx.ERR, "[Condition Judge]failed to get post args: ", err)
+	            ngx.log(ngx.INFO, "[Condition Judge]failed to get post args: ", err)
 	            return false
 	        end
 	
@@ -261,11 +261,11 @@ function _M.judge(condition)
                         return b64_plain
                     end
 				else
-		            ngx.log(ngx.ERR, "[Condition Judge]invalid base64 query content")
+		            ngx.log(ngx.INFO, "[Condition Judge]invalid base64 query content")
 		            return false
 				end
 			else
-				ngx.log(ngx.ERR, "[Condition Judge]invalid base64 query content type: ", type(__query_content__))
+				ngx.log(ngx.INFO, "[Condition Judge]invalid base64 query content type: ", type(__query_content__))
 	            return false
 			end
 		else
@@ -277,7 +277,7 @@ function _M.judge(condition)
                     return b64_plain
 				end
 	        else
-				ngx.log(ngx.ERR, "[Condition Judge]invalid base64 query name: ", condition.name)
+				ngx.log(ngx.INFO, "[Condition Judge]invalid base64 query name: ", condition.name)
 	            return false
 	        end
 		end

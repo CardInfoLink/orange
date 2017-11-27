@@ -6,7 +6,7 @@ local ngx_re_find = ngx.re.find
 
 local function assert_condition(real, operator, expected)
     if not real then
-        ngx.log(ngx.ERR, string_format("assert_condition error: %s %s %s", real, operator, expected))
+        ngx.log(ngx.INFO, string_format("assert_condition error: %s %s %s", real, operator, expected))
         return false
     end
 
@@ -113,7 +113,7 @@ function _M.judge(condition)
         ngx.req.read_body()
         local post_params, err = ngx.req.get_post_args()
         if not post_params or err then
-            ngx.log(ngx.ERR, "[Condition Judge]failed to get post args: ", err)
+            ngx.log(ngx.INFO, "[Condition Judge]failed to get post args: ", err)
             return false
         end
 
