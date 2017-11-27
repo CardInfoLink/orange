@@ -8,6 +8,7 @@
                 <option value="1">and匹配</option>
                 <option value="2">or匹配</option>
                 <option value="3">复杂匹配</option>
+                <option value="4">关联条件匹配</option>
             </select>
         </div>
 
@@ -30,12 +31,17 @@
                 <!-- <option value="Method">Method</option> -->
                 <option value="Host">Host</option>
                 <option value="Referer">Referer</option>
+                <option value="JsonQueryParam">JsonQueryParam</option>
+                <option value="JsonPostParam">JsonPostParam</option>
+                <option value="Base64QueryParam">Base64QueryParam</option>
+                <option value="Base64PostParam">Base64PostParam</option>
+                <option value="B64DecQueryParam">B64DecQueryParam</option>
             </select>
         </div>
-        <div class="col-sm-2 condition-name-hodler" style="display:none;padding-left:0px;">
+        <div class="col-sm-2 condition-name-holder" style="display:none;padding-left:0px;">
             <input type="text" class="form-control" name="rule-judge-condition-name" placeholder="name">
         </div>
-        <div class="col-sm-3" style="padding: 0px;">
+        <div class="col-sm-3 condition-operator-holder" style="padding: 0px;">
             <select class="form-control"  name="rule-judge-condition-operator">
                 <option value="match">Match</option>
                 <option value="not_match">Not Match</option>
@@ -47,7 +53,7 @@
                 <option value="<=">&le;</option>
             </select>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-3 condition-value-holder">
             <input type="text" class="form-control" name="rule-judge-condition-value" placeholder="value">
         </div>
         <div class="col-sm-1" style="margin-top:5px">

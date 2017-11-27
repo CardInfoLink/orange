@@ -75,7 +75,7 @@
         initJudgeTypeChangeEvent: function () {
             $(document).on("change", '#rule-judge-type', function () {
                 var judge_type = $(this).val();
-                if (judge_type != "0" && judge_type != "1" && judge_type != "2" && judge_type != "3") {
+                if (judge_type != "0" && judge_type != "1" && judge_type != "2" && judge_type != "3" && judge_type != "4") {
                     L.Common.showTipDialog("提示", "选择的judge类型不合法");
                     return
                 }
@@ -93,13 +93,24 @@
             $(document).on("change", 'select[name=rule-judge-condition-type]', function () {
                 var condition_type = $(this).val();
 
-                if (condition_type != "Header" && condition_type != "Query" && condition_type != "PostParams") {
+                if (condition_type == "B64DecQueryParam") {
                     $(this).parents(".condition-holder").each(function () {
-                        $(this).find(".condition-name-hodler").hide();
+                        $(this).find(".condition-name-holder").show();
+                        $(this).find(".condition-operator-holder").hide();
+                        $(this).find(".condition-value-holder").hide();
+                    });
+                } else if (condition_type != "Header" && condition_type != "Query" && condition_type != "PostParams"
+				&& condition_type != "JsonQueryParam" && condition_type != "JsonPostParam" && condition_type != "Base64QueryParam" && condition_type != "Base64PostParam") {
+                    $(this).parents(".condition-holder").each(function () {
+                        $(this).find(".condition-name-holder").hide();
+                        $(this).find(".condition-operator-holder").show();
+                        $(this).find(".condition-value-holder").show();
                     });
                 } else {
                     $(this).parents(".condition-holder").each(function () {
-                        $(this).find(".condition-name-hodler").show();
+                        $(this).find(".condition-name-holder").show();
+                        $(this).find(".condition-operator-holder").show();
+                        $(this).find(".condition-value-holder").show();
                     });
                 }
             });
@@ -265,7 +276,10 @@
                 var condition_type = self.find("select[name=rule-judge-condition-type]").val();
                 condition.type = condition_type;
 
-                if (condition_type == "Header" || condition_type == "Query" || condition_type == "PostParams") {
+                if (condition_type == "B64DecQueryParam") {
+                    condition.name = self.find("input[name=rule-judge-condition-name]").val();
+                } else if (condition_type == "Header" || condition_type == "Query" || condition_type == "PostParams"
+				 || condition_type == "JsonQueryParam" || condition_type == "JsonPostParam" || condition_type == "Base64QueryParam" || condition_type == "Base64PostParam") {
                     var condition_name = self.find("input[name=rule-judge-condition-name]").val();
                     if (!condition_name) {
                         tmp_success = false;
@@ -273,10 +287,13 @@
                     }
 
                     condition.name = condition_name;
-                }
 
-                condition.operator = self.find("select[name=rule-judge-condition-operator]").val();
-                condition.value = self.find("input[name=rule-judge-condition-value]").val() || "";
+                    condition.operator = self.find("select[name=rule-judge-condition-operator]").val();
+                    condition.value = self.find("input[name=rule-judge-condition-value]").val() || "";
+                } else {
+                    condition.operator = self.find("select[name=rule-judge-condition-operator]").val();
+                    condition.value = self.find("input[name=rule-judge-condition-value]").val() || "";
+                }
 
                 judge_conditions.push(condition);
             });
